@@ -1,5 +1,5 @@
 export const ApiResponse = {
-  success: (data: any, status = 200) => {
+  success: <T>(data: T, status = 200) => {
     return Response.json(
       {
         status: "success",
@@ -9,7 +9,7 @@ export const ApiResponse = {
     );
   },
 
-  error: (message: string, details: any = null, status = 400) => {
+  error: <T = unknown>(message: string, details: T | null = null, status = 400) => {
     return Response.json(
       {
         status: "error",

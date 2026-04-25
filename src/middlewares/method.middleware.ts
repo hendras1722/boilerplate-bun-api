@@ -1,7 +1,9 @@
-type Handler = (req: any) => Promise<Response> | Response;
+import type { BunRequest } from "bun";
 
-const validateMethod = (method: string, handler: Handler) => {
-  return async (req: Request) => {
+type Handler<T extends string = string> = (req: BunRequest<T>) => Promise<Response> | Response;
+
+const validateMethod = <T extends string>(method: string, handler: Handler<T>) => {
+  return async (req: BunRequest<T>) => {
     if (req.method !== method) {
       return Response.json(
         { error: `Method ${req.method} not allowed. Use ${method}` },
@@ -12,7 +14,7 @@ const validateMethod = (method: string, handler: Handler) => {
   };
 };
 
-export const get = (handler: Handler) => validateMethod("GET", handler);
-export const post = (handler: Handler) => validateMethod("POST", handler);
-export const put = (handler: Handler) => validateMethod("PUT", handler);
-export const del = (handler: Handler) => validateMethod("DELETE", handler);
+export const get = <T extends string = string>(handler: Handler<T>) => validateMethod("GET", handler);
+export const post = <T extends string = string>(handler: Handler<T>) => validateMethod("POST", handler);
+export const put = <T extends string = string>(handler: Handler<T>) => validateMethod("PUT", handler);
+export const del = <T extends string = string>(handler: Handler<T>) => validateMethod("DELETE", handler);

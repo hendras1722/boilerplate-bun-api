@@ -5,3 +5,4 @@
 [2026-04-25T14:49:51.881Z] GET http://localhost:3000/api/logs - Status: 200 - Duration: 2ms
 [2026-04-25T14:50:05.349Z] GET http://localhost:3000/api/uplo - Status: 404 - Duration: 1ms - Msg: Route not found
 [2026-04-25T14:50:08.688Z] GET http://localhost:3000/api/logs - Status: 200 - Duration: 0ms
+[2026-04-25T15:39:53.172Z] POST http://localhost:3000/api/v2/upload - Status: 201 - Duration: 13ms

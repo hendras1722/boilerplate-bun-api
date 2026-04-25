@@ -9,7 +9,7 @@ export const logger = async (req: Request) => {
 
   console.log(`[${timestamp}] ${method} ${url}`);
 
-  return async (res?: Response, error?: any, message?: string) => {
+  return async (res?: Response, error?: unknown, message?: string) => {
     const duration = Date.now() - start;
     const status = res?.status || (error ? 500 : 0);
 
@@ -34,4 +34,22 @@ export const logger = async (req: Request) => {
   };
 };
 
+import { ApiResponse } from "../utils/response";
 
+export const withLogger = <Req extends Request, Res extends Response | Promise<Response>>(handler: (req: Req) => Res) => {
+  return async (req: Req): Promise<Response> => {
+    const logDone = await logger(req);
+    try {
+      const response = await handler(req);
+      await logDone(response);
+      return response;
+    } catch (err) {
+      await logDone(undefined, err);
+      return ApiResponse.error(
+        "Internal Server Error",
+        err instanceof Error ? err.message : String(err),
+        500
+      );
+    }
+  };
+};
