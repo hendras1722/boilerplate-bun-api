@@ -6,3 +6,29 @@
 [2026-04-25T14:50:05.349Z] GET http://localhost:3000/api/uplo - Status: 404 - Duration: 1ms - Msg: Route not found
 [2026-04-25T14:50:08.688Z] GET http://localhost:3000/api/logs - Status: 200 - Duration: 0ms
 [2026-04-25T15:39:53.172Z] POST http://localhost:3000/api/v2/upload - Status: 201 - Duration: 13ms
+[2026-04-25T15:46:19.391Z] GET http://localhost:3000/api/version - Status: 200 - Duration: 4ms
+[2026-04-25T15:46:32.990Z] GET http://localhost:3000/api/logs - Status: 200 - Duration: 7ms
+[2026-04-25T15:46:49.132Z] GET http://localhost:3000/api/log - Status: 404 - Duration: 1ms - Msg: Route not found
+[2026-04-25T15:46:51.979Z] GET http://localhost:3000/api/logs - Status: 200 - Duration: 1ms
+[2026-04-26T13:49:59.511Z] POST http://localhost:3000/api/upload - Status: 404 - Duration: 3ms - Msg: Route not found
+[2026-04-26T13:50:06.048Z] POST http://localhost:3000/api/v2/upload - Status: 201 - Duration: 11ms
+[2026-04-26T13:50:20.271Z] GET http://localhost:3000/api/v2/uploads/1777211406052-cv_syahendra_id.pdf?expires=1777215006&signature=25b7c1a8fef77828dcc21ea1fd4477a232aae6426759fbab41e65b479e78b8e3 - Status: 200 - Duration: 4ms
+[2026-04-26T13:50:25.922Z] GET http://localhost:3000/api/v2/uploads/1777211406052-cv_syahendra_id.pdf - Status: 403 - Duration: 0ms - Msg: Client/Server Error
+[2026-04-26T13:50:32.647Z] GET http://localhost:3000/api/v2/uploads/1777211406052-cv_syahendra_id.pdf?expires=1777215006&signature=25b7c1a8fef77828dcc21ea1fd4477a232aae6426759fbab41e65b479e78b8e3 - Status: 200 - Duration: 0ms
+[2026-04-26T13:50:40.388Z] GET http://localhost:3000/api/v2/uploads/1777211406052-cv_syahendra_id.pdf?expires=1777215006&signature=5b7c1a8fef77828dcc21ea1fd4477a232aae6426759fbab41e65b479e78b8e3 - Status: 403 - Duration: 1ms - Msg: Client/Server Error
+[2026-04-26T14:06:09.437Z] POST http://localhost:3000/api/v2/upload - Status: 201 - Duration: 36ms
+[2026-04-26T14:10:45.019Z] GET http://localhost:3000/api/v2/get-url/1777212369457-adek-ucu.jpeg - Status: 201 - Duration: 1ms
+[2026-04-26T14:11:14.469Z] GET http://localhost:3000/api/v2/get-url?key=1777212369457-adek-ucu.jpeg - Status: 404 - Duration: 0ms - Msg: Route not found
+[2026-04-26T14:11:31.602Z] GET http://localhost:3000/api/v2/get-url/1777212369457-adek-ucu.jpeg - Status: 201 - Duration: 0ms
+[2026-04-26T14:11:45.712Z] GET http://localhost:3000/api/v2/get-url/1777212369457-adek-ucu.jpeg - Status: 201 - Duration: 1ms
+[2026-04-26T14:11:50.944Z] GET http://localhost:3000/api/v2/get-url/1777212369457-adek-ucu.jpeg - Status: 201 - Duration: 0ms
+[2026-04-26T14:12:03.546Z] GET http://localhost:3000/api/v2/get-url/1777212369457-adek-ucu.jpeg - Status: 201 - Duration: 0ms
+[2026-04-26T14:12:07.473Z] GET http://localhost:3000/api/v2/uploads/1777212369457-adek-ucu.jpeg?expires=1777216323&signature=63ee480264df025f567ca34eeef330e3e978cb3829f6392c8c4f8ef24ab9248c - Status: 200 - Duration: 4ms
+[2026-04-26T14:13:39.946Z] GET http://localhost:3000/api/v2/get-url/1777212369457-adek-ucu.jpeg - Status: 201 - Duration: 0ms
+[2026-04-26T14:13:54.826Z] GET http://localhost:3000/api/v2/get-url/1777212369457-adek-ucu.jpeg - Status: 201 - Duration: 1ms
+[2026-04-26T14:19:49.298Z] GET http://localhost:3000/api/v2/get-url/1777212369457-adek-ucu.jpeg - Status: 200 - Duration: 1ms
+[2026-04-26T14:20:12.388Z] GET http://localhost:3000/api/v2/get-url/1777212369457-adek-ucu.jpeg - Status: 200 - Duration: 1ms
+[2026-04-26T14:20:28.267Z] GET http://localhost:3000/api/v2/get-url/1777212369457-adek-ucu.jpeg - Status: 200 - Duration: 1ms
+[2026-04-26T14:22:16.225Z] GET http://localhost:3000/api/v2/get-url/1777212369457-adek-ucu.jpeg - Status: 200 - Duration: 7ms
+[2026-04-26T14:22:30.051Z] GET http://localhost:3000/api/v2/get-url/1777212369457-adek-ucu.jpeg - Status: 200 - Duration: 2ms
+[2026-04-26T14:22:35.239Z] GET http://localhost:3000/api/v2/get-url/1777212369457-adek-ucu.jpeg - Status: 200 - Duration: 1ms
