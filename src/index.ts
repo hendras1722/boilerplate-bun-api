@@ -6,20 +6,28 @@ import { ApiResponse } from "./utils/response";
 import { parseLog } from "./utils/parseLog";
 
 const routes = {
-  "/api/version": withLogger(async (req: BunRequest<"/api/version">) => ApiResponse.success({ version: "v2" })),
-  '/api/logs': withLogger(async (req: BunRequest<'/api/logs'>) => {
-    const logFile = Bun.file("./app.log");
-    const content = await logFile.text();
-    const lines = content.trim().split("\n").map(parseLog).filter(Boolean);
-    return ApiResponse.success(lines);
-  }),
+  "/api/version": async (req: BunRequest<"/api/version">) => ApiResponse.success({ version: "v2" }),
+  '/api/logs': {
+    GET: withLogger(async (req: BunRequest<'/api/logs'>) => {
+      const logFile = Bun.file("./app.log");
+      const content = await logFile.text();
+      const lines = content.trim().split("\n").map(parseLog).filter(Boolean);
+      return ApiResponse.success(lines);
+    }),
+    DELETE: withLogger(async (req: BunRequest<'/api/logs'>) => {
+      Bun.write("./app.log", "");
+      return ApiResponse.success("Logs cleared");
+    })
+  },
   ...userRoutes,
   ...uploadRoutes
 };
 
 const server = serve({
-  port: 3000,
+  port: 8080,
   routes,
+  idleTimeout: 15,
+  maxRequestBodySize: 1024 * 1024 * 10,
   async fetch(req) {
     const logDone = await logger(req);
     const res = ApiResponse.error("Route not found", { path: new URL(req.url).pathname }, 404);

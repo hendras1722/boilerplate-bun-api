@@ -1,5 +1,5 @@
 import { ApiResponse } from "../utils/response";
-import { generateSignedUrl } from "../utils/s3Presign";
+import { generateSignedUrl } from "../utils/filePresign";
 
 export const UploadController = {
   async uploadFile(req: Request) {

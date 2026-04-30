@@ -1,5 +1,5 @@
 import { ApiResponse } from "../utils/response";
-import { verifySignature } from "../utils/s3Presign";
+import { verifySignature } from "../utils/filePresign";
 
 export const withPresign = <Req extends Request, Res extends Response | Promise<Response>>(handler: (req: Req) => Res) => {
   return async (req: Req): Promise<Response> => {

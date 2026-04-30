@@ -5,18 +5,16 @@ import { ApiResponse } from "../utils/response";
 
 export const UserController = {
   async getAllUsers() {
-    const users = await sql<User[]>`SELECT * FROM users`;
-    return ApiResponse.success(users);
+    const users = sql.query("SELECT * FROM users").all();
+    return Response.json(users);
   },
 
   async createUser(req: BunRequest<"/api/v2/create-user">) {
     try {
       const data = await req.json() as CreateUserInput;
-      const [user] = await sql<User[]>`
-        INSERT INTO users ${sql(data)}
-        RETURNING *
-      `;
-      return ApiResponse.success(user, 201);
+      const result = sql.query("INSERT INTO users (name, email) VALUES (?, ?) RETURNING *").get(data.name, data.email);
+
+      return ApiResponse.success(result, 201);
     } catch (err) {
       return ApiResponse.error("Failed to create user", err instanceof Error ? err.message : String(err));
     }
@@ -26,7 +24,10 @@ export const UserController = {
     if (!id) {
       return ApiResponse.error("Missing id parameter", null, 400);
     }
-    await sql`DELETE FROM users WHERE id = ${id}`;
+    const result = sql.query("DELETE FROM users WHERE id = ?").run(id);
+    if (result.changes === 0) {
+      return Response.json({ error: "User not found" }, { status: 404 });
+    }
     return ApiResponse.success({ message: 'User deleted successfully', id });
   }
 };
