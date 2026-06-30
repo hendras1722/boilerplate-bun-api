@@ -43,6 +43,7 @@ const server = serve({
   routes,
   idleTimeout: 10,
   maxRequestBodySize: 1024 * 1024 * 10,
+  reusePort: true,
   // async fetch(req) {
   // const logDone = await logger(req);
   // await logDone(res, undefined, "Route not found");
