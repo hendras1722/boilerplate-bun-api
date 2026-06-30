@@ -17,7 +17,7 @@ const versionResponse = {
 
 const routes = {
   "/api/version": {
-    GET: () => ApiResponse.success(null, 200, "Insira Customer Rewrite API is running")
+    GET: () => ApiResponse.success(versionResponse, 200)
   },
   '/api/logs': {
     GET: withLogger(async (req: BunRequest<'/api/logs'>) => {
@@ -41,7 +41,7 @@ const routes = {
 const server = serve({
   port: 3000,
   routes,
-  idleTimeout: 15,
+  idleTimeout: 10,
   maxRequestBodySize: 1024 * 1024 * 10,
   // async fetch(req) {
   // const logDone = await logger(req);
