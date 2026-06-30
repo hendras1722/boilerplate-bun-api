@@ -1,8 +1,9 @@
 export const ApiResponse = {
-  success: <T>(data: T, status = 200) => {
+  success: <T>(data: T, status = 200, message: string = "ok") => {
     return Response.json(
       {
         status: "success",
+        message,
         data: data,
       },
       { status }

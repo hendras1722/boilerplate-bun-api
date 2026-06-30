@@ -5,8 +5,20 @@ import { logger, withLogger } from "./middlewares/logger.middleware";
 import { ApiResponse } from "./utils/response";
 import { parseLog } from "./utils/parseLog";
 
+Bun.cron("1 * * * *", async () => {
+  console.log("Cron job executed");
+});
+
+const versionResponse = {
+  status: "ok",
+  message: "pong",
+};
+
+
 const routes = {
-  "/api/version": async (req: BunRequest<"/api/version">) => ApiResponse.success({ version: "v2" }),
+  "/api/version": {
+    GET: () => ApiResponse.success(null, 200, "Insira Customer Rewrite API is running")
+  },
   '/api/logs': {
     GET: withLogger(async (req: BunRequest<'/api/logs'>) => {
       const logFile = Bun.file("./app.log");
@@ -20,20 +32,23 @@ const routes = {
     })
   },
   ...userRoutes,
-  ...uploadRoutes
+  ...uploadRoutes,
+  '/api/*': (req: BunRequest) => {
+    return ApiResponse.error("Route not found", { path: new URL(req.url).pathname }, 404)
+  }
 };
 
 const server = serve({
-  port: 8080,
+  port: 3000,
   routes,
   idleTimeout: 15,
   maxRequestBodySize: 1024 * 1024 * 10,
-  async fetch(req) {
-    const logDone = await logger(req);
-    const res = ApiResponse.error("Route not found", { path: new URL(req.url).pathname }, 404);
-    await logDone(res, undefined, "Route not found");
-    return res;
-  },
+  // async fetch(req) {
+  // const logDone = await logger(req);
+  // await logDone(res, undefined, "Route not found");
+  // const res = ApiResponse.error("Route not found", { path: new URL(req.url).pathname }, 404);
+  // return res;
+  // },
   error: (error) => {
     console.error(error);
     return ApiResponse.error("Global error", error.message, 500);

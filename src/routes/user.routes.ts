@@ -9,5 +9,8 @@ export const userRoutes = {
   },
   "/api/v2/users/:id": {
     DELETE: withLogger((req: BunRequest<"/api/v2/delete-user/:id">) => UserController.deleteUser(req, req.params.id)),
+  },
+  "/api/v1/users/:id": {
+    GET: withLogger(UserController.getUserById),
   }
 };

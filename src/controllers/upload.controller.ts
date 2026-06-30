@@ -1,8 +1,9 @@
 import { ApiResponse } from "../utils/response";
 import { generateSignedUrl } from "../utils/filePresign";
+import type { BunRequest } from "bun";
 
 export const UploadController = {
-  async uploadFile(req: Request) {
+  async uploadFile(req: BunRequest<"/api/v2/upload">) {
     try {
       const formData = await req.formData();
       const file = formData.get("file");

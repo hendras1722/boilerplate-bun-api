@@ -29,5 +29,43 @@ export const UserController = {
       return Response.json({ error: "User not found" }, { status: 404 });
     }
     return ApiResponse.success({ message: 'User deleted successfully', id });
+  },
+
+  async getUserById(req: BunRequest<"/api/v1/users/:id">) {
+    try {
+      const id = req.params.id;
+      if (!id) {
+        return ApiResponse.error("Missing id parameter", null, 400);
+      }
+
+      const users = await Bun.sql`
+        SELECT 
+          id, 
+          name, 
+          email, 
+          to_char(created_at AT TIME ZONE 'Asia/Jakarta', 'YYYY-MM-DD"T"HH24:MI:SS.US"+07:00"') as created_at,
+          to_char(updated_at AT TIME ZONE 'Asia/Jakarta', 'YYYY-MM-DD"T"HH24:MI:SS.US"+07:00"') as updated_at
+        FROM users 
+        WHERE id = ${id} AND deleted_at IS NULL
+      `;
+
+      if (users.length === 0) {
+        return ApiResponse.error("User not found", null, 404);
+      }
+
+      const user = users[0];
+      const data = {
+        id: Number(user.id),
+        name: user.name,
+        email: user.email,
+        created_at: user.created_at,
+        updated_at: user.updated_at
+      };
+
+      return ApiResponse.success(data, 200, "User found");
+    } catch (err) {
+      return ApiResponse.error("Failed to retrieve user", err instanceof Error ? err.message : String(err));
+    }
   }
 };
+
