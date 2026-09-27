@@ -53,6 +53,22 @@ The server will be running at `http://localhost:3000`.
 - `GET /api/v2/uploads/:filename`: Serve an uploaded file.
 - `GET /api/v2/test`: A test page for file uploads.
 
+### Background Jobs
+- `POST /api/v2/jobs/:type`: Enqueue a job on a background worker thread pool (fire-and-forget).
+  - Body: JSON payload passed to the job handler.
+  - Built-in job types: `hash` (`{ "data": "string" }`), `fibonacci` (`{ "n": number }`).
+  - Add new job types by registering a handler in `src/workers/job.worker.ts`.
+  - Returns `202` immediately with `{ "job_id": "...", "status": "pending" }`. Job status/result is tracked in an in-memory `Map` (`src/utils/jobStore.ts`) — not persisted to disk, so it resets on server restart.
+- `GET /api/v2/jobs/:id/events`: Server-Sent Events stream for a job's status. Sends the current status immediately (or `pending` if still running), then pushes one final event (`completed` or `failed`) and closes the connection — no polling required. This is the endpoint an external system should subscribe to right after calling `POST /api/v2/jobs/:type`.
+
+### Reminders
+- `POST /api/v2/reminders`: Create a reminder.
+  - Body: `{ "title": "string", "note"?: "string", "remind_at": "ISO 8601 date string" }`
+- `GET /api/v2/reminders`: List all reminders, ordered by `remind_at`.
+- `GET /api/v2/reminders/:id`: Get a single reminder.
+- `DELETE /api/v2/reminders/:id`: Delete a reminder.
+- A `Bun.cron` job runs every minute, marks any `pending` reminder whose `remind_at` has passed as `triggered`, and logs it. Extend `src/utils/reminderScheduler.ts` to send emails/notifications instead of just logging.
+
 ## 📁 Project Structure
 
 ```text
@@ -62,7 +78,8 @@ src/
 ├── middlewares/    # Custom middlewares (logger, methods)
 ├── models/         # TypeScript interfaces
 ├── routes/         # Route definitions
-├── utils/          # Helpers (Response, parseLog)
+├── utils/          # Helpers (Response, parseLog, worker pool)
+├── workers/        # Background worker thread scripts
 └── index.ts        # Entry point
 ```
 

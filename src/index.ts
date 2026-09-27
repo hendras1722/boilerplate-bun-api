@@ -1,13 +1,17 @@
 import { serve, type BunRequest } from "bun";
 import { userRoutes } from "./routes/user.routes";
 import { uploadRoutes } from "./routes/upload.routes";
+import { reminderRoutes } from "./routes/reminder.routes";
 import { logger, withLogger } from "./middlewares/logger.middleware";
 import { ApiResponse } from "./utils/response";
 import { parseLog } from "./utils/parseLog";
+import { reminderWorker } from "./workers/reminder.worker";
 
 Bun.cron("1 * * * *", async () => {
   console.log("Cron job executed");
 });
+
+reminderWorker.start();
 
 const versionResponse = {
   status: "ok",
@@ -16,6 +20,9 @@ const versionResponse = {
 
 
 const routes = {
+  '/': {
+    GET: () => new Response("Welcome to BUN boilerplate for Express users"),
+  },
   "/api/version": {
     GET: () => ApiResponse.success(versionResponse, 200)
   },
@@ -33,13 +40,14 @@ const routes = {
   },
   ...userRoutes,
   ...uploadRoutes,
+  ...reminderRoutes,
   '/api/*': (req: BunRequest) => {
     return ApiResponse.error("Route not found", { path: new URL(req.url).pathname }, 404)
   }
 };
 
 const server = serve({
-  port: 3000,
+  port: 8080,
   routes,
   idleTimeout: 10,
   maxRequestBodySize: 1024 * 1024 * 10,
@@ -63,4 +71,14 @@ const server = serve({
 // });
 
 console.log(`🚀 Server running at http://localhost:${server.port}`);
+
+const shutdown = () => {
+  console.log("Shutting down server...");
+  reminderWorker.stop();
+  server.stop();
+  process.exit(0);
+};
+
+process.on("SIGINT", shutdown);
+process.on("SIGTERM", shutdown);
 
